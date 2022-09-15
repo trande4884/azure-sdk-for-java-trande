@@ -68,13 +68,6 @@ public class PersonCrossPartitionIT {
     private static CosmosEntityInformation<PersonCrossPartition, String> personCrossPartitionInfo;
 
     private static String containerName;
-
-    @Autowired
-    private AuditableRepository auditableRepository;
-
-    @Autowired
-    private AddressRepository addressRepository;
-
     @Before
     public void setUp() {
         personCrossPartitionInfo = new CosmosEntityInformation<>(PersonCrossPartition.class);
