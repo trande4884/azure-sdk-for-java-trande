@@ -32,29 +32,20 @@ public final class TestConfigurations {
     private static Logger logger = LoggerFactory.getLogger(TestConfigurations.class);
     private static Properties properties = loadProperties();
 
-    private final static String COSMOS_EMULATOR_KEY = "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==";
-    private final static String COSMOS_EMULATOR_HOST = "https://localhost:8081/";
+    private final static String COSMOS_EMULATOR_KEY = "40NeoyRkNg7GGpfAmBadCqLZPKB750b5yatKeNfaZ9ePS4m0JHg2rKvibv6ghdPajzJ8JhQZEebMv5mBpDYt8A==";
+    private final static String COSMOS_EMULATOR_HOST = "https://javasdktesting.documents.azure.com:443/";
 
     // REPLACE MASTER_KEY and HOST with values from your Azure Cosmos DB account.
     // The default values are credentials of the local emulator, which are not used in any production environment.
     // <!--[SuppressMessage("Microsoft.Security", "CS002:SecretInNextLine")]-->
     public final static String MASTER_KEY =
-        properties.getProperty("ACCOUNT_KEY",
-                    StringUtils.defaultString(Strings.emptyToNull(
-                            System.getenv().get("ACCOUNT_KEY")),
-                            COSMOS_EMULATOR_KEY));
+        "40NeoyRkNg7GGpfAmBadCqLZPKB750b5yatKeNfaZ9ePS4m0JHg2rKvibv6ghdPajzJ8JhQZEebMv5mBpDYt8A==";
 
     public final static String SECONDARY_MASTER_KEY =
-        properties.getProperty("SECONDARY_ACCOUNT_KEY",
-            StringUtils.defaultString(Strings.emptyToNull(
-                System.getenv().get("SECONDARY_ACCOUNT_KEY")),
-                COSMOS_EMULATOR_KEY));
+        "LpkkultbAtOWJA3oAjuala57hfCQJyQcf3fJUJ3nEapv3qkcmk8qnhQge7KhIZE7uVePDNG4SisO95yDxhawIg==";
 
     public final static String HOST =
-        properties.getProperty("ACCOUNT_HOST",
-                    StringUtils.defaultString(Strings.emptyToNull(
-                            System.getenv().get("ACCOUNT_HOST")),
-                            COSMOS_EMULATOR_HOST));
+        "https://javasdktesting.documents.azure.com:443/";
 
     public final static String THROUGHPUT_CONTROL_ACCOUNT_HOST =
             properties.getProperty("THROUGHPUT_CONTROL_ACCOUNT_HOST",
@@ -71,7 +62,7 @@ public final class TestConfigurations {
     public final static String CONSISTENCY =
         properties.getProperty("ACCOUNT_CONSISTENCY",
                                StringUtils.defaultString(Strings.emptyToNull(
-                                       System.getenv().get("ACCOUNT_CONSISTENCY")), "Strong"));
+                                       System.getenv().get("ACCOUNT_CONSISTENCY")), "Session"));
 
     public final static String PREFERRED_LOCATIONS =
         properties.getProperty("PREFERRED_LOCATIONS",

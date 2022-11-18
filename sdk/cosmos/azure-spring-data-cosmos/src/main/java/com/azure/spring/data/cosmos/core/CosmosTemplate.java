@@ -69,7 +69,7 @@ import java.util.stream.Collectors;
  */
 public class CosmosTemplate implements CosmosOperations, ApplicationContextAware {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(CosmosTemplate.class);
+    public static final Logger LOGGER = LoggerFactory.getLogger(CosmosTemplate.class);
 
     private final MappingCosmosConverter mappingCosmosConverter;
     private final IsNewAwareAuditingHandler cosmosAuditingHandler;
@@ -481,7 +481,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
     @Override
     public CosmosContainerProperties createContainerIfNotExists(CosmosEntityInformation<?, ?> information) {
 
-        final CosmosContainerResponse response = createDatabaseIfNotExists()
+        final CosmosContainerResponse response = createDatabaseIfNotExists(this.databaseName)
             .publishOn(Schedulers.parallel())
             .onErrorResume(throwable ->
                 CosmosExceptionUtils.exceptionHandler("Failed to create database", throwable,
@@ -528,16 +528,16 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         return response.getProperties();
     }
 
-    private Mono<CosmosDatabaseResponse> createDatabaseIfNotExists() {
+    public Mono<CosmosDatabaseResponse> createDatabaseIfNotExists(String dbName) {
         if (databaseThroughputConfig == null) {
             return cosmosAsyncClient
-                .createDatabaseIfNotExists(this.databaseName);
+                .createDatabaseIfNotExists(dbName);
         } else {
             ThroughputProperties throughputProperties = databaseThroughputConfig.isAutoScale()
                 ? ThroughputProperties.createAutoscaledThroughput(databaseThroughputConfig.getRequestUnits())
                 : ThroughputProperties.createManualThroughput(databaseThroughputConfig.getRequestUnits());
             return cosmosAsyncClient
-                .createDatabaseIfNotExists(this.databaseName, throughputProperties);
+                .createDatabaseIfNotExists(dbName, throughputProperties);
         }
     }
 

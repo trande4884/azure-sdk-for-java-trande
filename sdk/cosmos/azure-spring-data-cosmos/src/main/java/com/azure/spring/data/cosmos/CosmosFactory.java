@@ -56,7 +56,7 @@ public class CosmosFactory {
      * Get Cosmos Database Name
      * @return Cosmos Database Name
      */
-    public String getDatabaseName() {
+    public String getDatabaseName() { // Different logic for getting databaseName for multi-tenant
         return this.databaseName;
     }
 
