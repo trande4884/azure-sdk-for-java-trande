@@ -61,7 +61,7 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
     }
 
     private final Field id;
-    private final Field partitionKeyField;
+    private final Field partitionKeyField; // TODO: This needs to be updated to allow for subpartitioning
     private final Field versionField;
     private final String containerName;
     private final String partitionKeyPath;
@@ -240,6 +240,7 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
      * @return partition key path
      */
     public String getPartitionKeyPath() {
+        // TODO: This needs to be updated to allow for subpartitioning
         if (partitionKeyField == null) {
             return partitionKeyPath == null ? "/null" : partitionKeyPath;
         } else {
@@ -266,6 +267,7 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
      * @return partition key field
      */
     public Object getPartitionKeyFieldValue(T entity) {
+        // TODO: This needs to be updated to allow for subpartitioning
         return partitionKeyField == null ? null : ReflectionUtils.getField(partitionKeyField, entity);
     }
 
@@ -273,6 +275,7 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
      * @return the partition key field name
      */
     public String getPartitionKeyFieldName() {
+        // TODO: This needs to be updated to allow for subpartitioning
         return partitionKeyField == null ? null : partitionKeyField.getName();
     }
 
@@ -456,6 +459,7 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
          * @throws IllegalArgumentException if the partition key field fails validation
          */
         private static Field getPartitionKeyField(Class<?> domainType) {
+            // TODO: This needs to be updated to allow for subpartitioning
             Field partitionKey = null;
 
             final List<Field> fields = FieldUtils.getFieldsListWithAnnotation(domainType, PartitionKey.class);

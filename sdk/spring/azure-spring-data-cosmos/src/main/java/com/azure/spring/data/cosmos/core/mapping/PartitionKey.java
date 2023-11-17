@@ -23,3 +23,12 @@ public @interface PartitionKey {
      */
     String value() default "";
 }
+
+
+/*
+ *   TODO: Either update this tag to allow for multiple partition keys, one option would be to add
+ *    a field such as @PartitionKey(Index: 1) to allow for defining up to 3 PK's; or add a new
+ *    interface called @SubPartitionKey
+ *
+ *   For allowing params look at something like @Container and RU's
+ */
