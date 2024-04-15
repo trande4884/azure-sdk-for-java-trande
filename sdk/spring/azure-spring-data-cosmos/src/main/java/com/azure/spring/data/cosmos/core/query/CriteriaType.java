@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.core.query;
 
-import org.springframework.data.repository.query.parser.Part;
+import com.azure.spring.data.cosmos.common.CosmosPart;
 import org.springframework.lang.NonNull;
 
 import java.beans.ConstructorProperties;
@@ -133,34 +133,46 @@ public enum CriteriaType {
     /**
      * Not Contain
      */
-    NOT_CONTAINING("NOT CONTAINS");
+    NOT_CONTAINING("NOT CONTAINS"),
+
+    /**
+     * Is Defined
+     */
+    IS_DEFINED("IS_DEFINED"),
+
+    /**
+     * Not Is Defined
+     */
+    NOT_IS_DEFINED("NOT IS_DEFINED");
 
     private String sqlKeyword;
 
-    private static final Map<Part.Type, CriteriaType> PART_TREE_TYPE_TO_CRITERIA;
+    private static final Map<CosmosPart.Type, CriteriaType> PART_TREE_TYPE_TO_CRITERIA;
 
     static {
-        final Map<Part.Type, CriteriaType> map = new HashMap<>();
+        final Map<CosmosPart.Type, CriteriaType> map = new HashMap<>();
 
-        map.put(Part.Type.NEGATING_SIMPLE_PROPERTY, CriteriaType.NOT);
-        map.put(Part.Type.IS_NULL, CriteriaType.IS_NULL);
-        map.put(Part.Type.IS_NOT_NULL, CriteriaType.IS_NOT_NULL);
-        map.put(Part.Type.SIMPLE_PROPERTY, CriteriaType.IS_EQUAL);
-        map.put(Part.Type.BEFORE, CriteriaType.BEFORE);
-        map.put(Part.Type.AFTER, CriteriaType.AFTER);
-        map.put(Part.Type.IN, CriteriaType.IN);
-        map.put(Part.Type.NOT_IN, CriteriaType.NOT_IN);
-        map.put(Part.Type.GREATER_THAN, CriteriaType.GREATER_THAN);
-        map.put(Part.Type.CONTAINING, CriteriaType.CONTAINING);
-        map.put(Part.Type.NOT_CONTAINING, CriteriaType.NOT_CONTAINING);
-        map.put(Part.Type.ENDING_WITH, CriteriaType.ENDS_WITH);
-        map.put(Part.Type.STARTING_WITH, CriteriaType.STARTS_WITH);
-        map.put(Part.Type.GREATER_THAN_EQUAL, CriteriaType.GREATER_THAN_EQUAL);
-        map.put(Part.Type.LESS_THAN, CriteriaType.LESS_THAN);
-        map.put(Part.Type.LESS_THAN_EQUAL, CriteriaType.LESS_THAN_EQUAL);
-        map.put(Part.Type.TRUE, CriteriaType.TRUE);
-        map.put(Part.Type.FALSE, CriteriaType.FALSE);
-        map.put(Part.Type.BETWEEN, CriteriaType.BETWEEN);
+        map.put(CosmosPart.Type.NEGATING_SIMPLE_PROPERTY, CriteriaType.NOT);
+        map.put(CosmosPart.Type.IS_NULL, CriteriaType.IS_NULL);
+        map.put(CosmosPart.Type.IS_NOT_NULL, CriteriaType.IS_NOT_NULL);
+        map.put(CosmosPart.Type.SIMPLE_PROPERTY, CriteriaType.IS_EQUAL);
+        map.put(CosmosPart.Type.BEFORE, CriteriaType.BEFORE);
+        map.put(CosmosPart.Type.AFTER, CriteriaType.AFTER);
+        map.put(CosmosPart.Type.IN, CriteriaType.IN);
+        map.put(CosmosPart.Type.NOT_IN, CriteriaType.NOT_IN);
+        map.put(CosmosPart.Type.GREATER_THAN, CriteriaType.GREATER_THAN);
+        map.put(CosmosPart.Type.CONTAINING, CriteriaType.CONTAINING);
+        map.put(CosmosPart.Type.NOT_CONTAINING, CriteriaType.NOT_CONTAINING);
+        map.put(CosmosPart.Type.ENDING_WITH, CriteriaType.ENDS_WITH);
+        map.put(CosmosPart.Type.STARTING_WITH, CriteriaType.STARTS_WITH);
+        map.put(CosmosPart.Type.GREATER_THAN_EQUAL, CriteriaType.GREATER_THAN_EQUAL);
+        map.put(CosmosPart.Type.LESS_THAN, CriteriaType.LESS_THAN);
+        map.put(CosmosPart.Type.LESS_THAN_EQUAL, CriteriaType.LESS_THAN_EQUAL);
+        map.put(CosmosPart.Type.TRUE, CriteriaType.TRUE);
+        map.put(CosmosPart.Type.FALSE, CriteriaType.FALSE);
+        map.put(CosmosPart.Type.BETWEEN, CriteriaType.BETWEEN);
+        map.put(CosmosPart.Type.IS_DEFINED, CriteriaType.IS_DEFINED);
+        map.put(CosmosPart.Type.NOT_IS_DEFINED, CriteriaType.NOT_IS_DEFINED);
 
         PART_TREE_TYPE_TO_CRITERIA = Collections.unmodifiableMap(map);
     }
@@ -184,7 +196,7 @@ public enum CriteriaType {
      * @param partType PartType to be checked.
      * @return True if unsupported, or false.
      */
-    public static boolean isPartTypeUnSupported(@NonNull Part.Type partType) {
+    public static boolean isPartTypeUnSupported(@NonNull CosmosPart.Type partType) {
         return !isPartTypeSupported(partType);
     }
 
@@ -194,7 +206,7 @@ public enum CriteriaType {
      * @param partType PartType to be checked.
      * @return True if supported, or false.
      */
-    public static boolean isPartTypeSupported(@NonNull Part.Type partType) {
+    public static boolean isPartTypeSupported(@NonNull CosmosPart.Type partType) {
         return PART_TREE_TYPE_TO_CRITERIA.containsKey(partType);
     }
 
@@ -206,7 +218,7 @@ public enum CriteriaType {
      * @throws UnsupportedOperationException for unsupported part type
      */
     @SuppressWarnings("")
-    public static CriteriaType toCriteriaType(@NonNull Part.Type partType) {
+    public static CriteriaType toCriteriaType(@NonNull CosmosPart.Type partType) {
         final CriteriaType criteriaType = PART_TREE_TYPE_TO_CRITERIA.get(partType);
 
         if (criteriaType == null) {
@@ -283,6 +295,8 @@ public enum CriteriaType {
             case IS_NOT_NULL:
             case ARRAY_CONTAINS:
             case STRING_EQUALS:
+            case IS_DEFINED:
+            case NOT_IS_DEFINED:
                 return true;
             default:
                 return false;
@@ -320,6 +334,8 @@ public enum CriteriaType {
             case IS_NOT_NULL:
             case TRUE:
             case FALSE:
+            case IS_DEFINED:
+            case NOT_IS_DEFINED:
                 return true;
             default:
                 return false;

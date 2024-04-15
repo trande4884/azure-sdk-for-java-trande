@@ -3,6 +3,7 @@
 package com.azure.spring.data.cosmos.repository.query;
 
 import com.azure.spring.data.cosmos.Constants;
+import com.azure.spring.data.cosmos.common.CosmosPart;
 import com.azure.spring.data.cosmos.core.mapping.CosmosPersistentProperty;
 import com.azure.spring.data.cosmos.core.query.CosmosQuery;
 import com.azure.spring.data.cosmos.core.query.Criteria;
@@ -58,7 +59,13 @@ public class ReactiveCosmosQueryCreator extends AbstractQueryCreator<CosmosQuery
 
     @Override // Note (panli): side effect here, this method will change the iterator status of parameters.
     protected Criteria create(Part part, Iterator<Object> parameters) {
-        final Part.Type type = part.getType();
+        //final String type = part.getType().getKeywords().stream().toList().get(0);
+        //final CosmosPart.Type cosmosPart = CosmosPart.Type.fromProperty(type);
+        return this.create((CosmosPart) part, parameters);
+    }
+
+    protected Criteria create(CosmosPart part, Iterator<Object> parameters) {
+        final CosmosPart.Type type = part.getType();
         final String subject = getSubject(part);
         final List<Object> values = new ArrayList<>();
 
