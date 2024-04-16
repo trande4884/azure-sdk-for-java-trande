@@ -201,6 +201,23 @@ public class AddressRepositoryIT {
     }
 
     @Test
+    public void canDeleteMultipleByFieldAndPartitionedCity() {
+        Address TEST_ADDRESS1_PARTITION1a = new Address(
+            "99099", TestConstants.STREET, TestConstants.CITY);
+        repository.save(TEST_ADDRESS1_PARTITION1a);
+
+        final long count = repository.count();
+        assertThat(count).isEqualTo(5);
+
+        repository.deleteByStreetAndCity(
+            TEST_ADDRESS1_PARTITION1.getStreet(), TEST_ADDRESS1_PARTITION1.getCity());
+
+        final List<Address> result = TestUtils.toList(repository.findAll());
+
+        assertThat(result.size()).isEqualTo(3);
+    }
+
+    @Test
     public void canDeleteByPartitionedCity() {
         final long count = repository.count();
         assertThat(count).isEqualTo(4);

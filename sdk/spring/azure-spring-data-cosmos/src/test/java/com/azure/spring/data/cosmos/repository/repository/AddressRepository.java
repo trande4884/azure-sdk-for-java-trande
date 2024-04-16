@@ -21,6 +21,8 @@ import java.util.Optional;
 public interface AddressRepository extends CosmosRepository<Address, String> {
     void deleteByPostalCodeAndCity(String postalCode, String city);
 
+    void deleteByStreetAndCity(String street, String city);
+
     void deleteByCity(String city);
 
     Iterable<Address> findByPostalCodeAndCity(String postalCode, String city);

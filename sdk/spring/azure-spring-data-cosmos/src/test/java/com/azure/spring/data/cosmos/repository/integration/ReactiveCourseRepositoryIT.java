@@ -34,6 +34,7 @@ import reactor.test.StepVerifier;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -422,5 +423,20 @@ public class ReactiveCourseRepositoryIT {
         assertThat(queryDiagnostics).contains("\"PotentialSingleIndexes\"");
         assertThat(queryDiagnostics).contains("\"UtilizedCompositeIndexes\"");
         assertThat(queryDiagnostics).contains("\"PotentialCompositeIndexes\"");
+    }
+
+    @Test
+    public void canDeleteMultipleByFieldAndPartitionedDepartment() {
+        Course TEST_COURSE = new Course("6", COURSE_NAME_1, DEPARTMENT_NAME_3);
+        repository.save(TEST_COURSE).block();
+
+        List<Course> result = repository.findAll().collectList().block();
+        assertThat(result.size()).isEqualTo(5);
+
+        repository.deleteByNameAndDepartment(COURSE_NAME_1,
+            DEPARTMENT_NAME_3).block();
+
+        List<Course> result2 = repository.findAll().collectList().block();
+        assertThat(result2.size()).isEqualTo(3);
     }
 }
