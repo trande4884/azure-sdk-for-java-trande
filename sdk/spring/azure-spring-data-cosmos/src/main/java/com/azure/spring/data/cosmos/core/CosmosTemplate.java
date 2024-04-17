@@ -280,7 +280,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
             .getDatabase(this.getDatabaseName())
             .getContainer(containerName)
             .executeBulkOperations(Flux.fromIterable(cosmosItemOperations), cosmosBulkExecutionOptions)
-            .publishOn(CosmosSchedulers.SPRING_DATA_COSMOS_PARALLEL)
+            .publishOn(CosmosSchedulers.SPRING_DATA_BULK_EXECUTOR_BOUNDED_ELASTIC)
             .onErrorResume(throwable ->
                 CosmosExceptionUtils.exceptionHandler("Failed to insert item(s)", throwable,
                     this.responseDiagnosticsProcessor))
@@ -770,7 +770,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
                 .getDatabase(this.getDatabaseName())
                 .getContainer(containerName)
                 .executeBulkOperations(Flux.fromIterable(cosmosItemOperations), cosmosBulkExecutionOptions)
-                .publishOn(CosmosSchedulers.SPRING_DATA_COSMOS_PARALLEL)
+                .publishOn(CosmosSchedulers.SPRING_DATA_BULK_EXECUTOR_BOUNDED_ELASTIC)
                 .onErrorResume(throwable ->
                     CosmosExceptionUtils.exceptionHandler("Failed to delete item(s)", throwable,
                         this.responseDiagnosticsProcessor))
@@ -897,7 +897,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
                 .getDatabase(this.getDatabaseName())
                 .getContainer(containerName)
                 .executeBulkOperations(cosmosItemOperationFlux, cosmosBulkExecutionOptions)
-                .publishOn(CosmosSchedulers.SPRING_DATA_COSMOS_PARALLEL)
+                .publishOn(CosmosSchedulers.SPRING_DATA_BULK_EXECUTOR_BOUNDED_ELASTIC)
                 .onErrorResume(throwable ->
                     CosmosExceptionUtils.exceptionHandler("Failed to delete item(s)",
                         throwable, this.responseDiagnosticsProcessor))

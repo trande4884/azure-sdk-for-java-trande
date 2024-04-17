@@ -15,6 +15,10 @@ class CosmosSchedulers {
      */
     private static final String SPRING_DATA_COSMOS_PARALLEL_THREAD_NAME =  "spring-data-cosmos-parallel";
 
+    private static final String SPRING_DATA_COSMOS_BULK_BOUNDED_ELASTIC_THREAD_NAME = "spring-data-cosmos-bulk-bounded-elastic";
+
+    private final static int TTL_FOR_SCHEDULER_WORKER_IN_SECONDS = 60;
+
     /**
      * Using a custom parallel scheduler to be able to schedule retries etc.
      *     without being vulnerable to scenarios where applications abuse the
@@ -24,4 +28,12 @@ class CosmosSchedulers {
         SPRING_DATA_COSMOS_PARALLEL_THREAD_NAME,
         Schedulers.DEFAULT_POOL_SIZE,
         true);
+
+    public final static Scheduler SPRING_DATA_BULK_EXECUTOR_BOUNDED_ELASTIC = Schedulers.newBoundedElastic(
+        2 * Schedulers.DEFAULT_BOUNDED_ELASTIC_SIZE,
+        Schedulers.DEFAULT_BOUNDED_ELASTIC_QUEUESIZE,
+        SPRING_DATA_COSMOS_BULK_BOUNDED_ELASTIC_THREAD_NAME,
+        TTL_FOR_SCHEDULER_WORKER_IN_SECONDS,
+        true
+    );
 }

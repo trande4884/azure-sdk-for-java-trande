@@ -518,7 +518,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
                              .getDatabase(this.getDatabaseName())
                              .getContainer(containerName)
                              .executeBulkOperations(cosmosItemOperationsFlux, cosmosBulkExecutionOptions)
-                             .publishOn(CosmosSchedulers.SPRING_DATA_COSMOS_PARALLEL)
+                             .publishOn(CosmosSchedulers.SPRING_DATA_BULK_EXECUTOR_BOUNDED_ELASTIC)
                              .onErrorResume(throwable ->
                                  CosmosExceptionUtils.exceptionHandler("Failed to insert item(s)", throwable,
                                      this.responseDiagnosticsProcessor))
@@ -737,7 +737,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
                    .getDatabase(this.getDatabaseName())
                    .getContainer(containerName)
                    .executeBulkOperations(cosmosItemOperationFlux, cosmosBulkExecutionOptions)
-                   .publishOn(CosmosSchedulers.SPRING_DATA_COSMOS_PARALLEL)
+                   .publishOn(CosmosSchedulers.SPRING_DATA_BULK_EXECUTOR_BOUNDED_ELASTIC)
                    .onErrorResume(throwable ->
                        CosmosExceptionUtils.exceptionHandler("Failed to delete item(s)", throwable,
                            this.responseDiagnosticsProcessor)).then();
@@ -802,7 +802,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
                 .getDatabase(this.getDatabaseName())
                 .getContainer(containerName)
                 .executeBulkOperations(cosmosItemOperationFlux, cosmosBulkExecutionOptions)
-                .publishOn(CosmosSchedulers.SPRING_DATA_COSMOS_PARALLEL)
+                .publishOn(CosmosSchedulers.SPRING_DATA_BULK_EXECUTOR_BOUNDED_ELASTIC)
                 .onErrorResume(throwable ->
                     CosmosExceptionUtils.exceptionHandler("Failed to delete item(s)", throwable,
                         this.responseDiagnosticsProcessor))

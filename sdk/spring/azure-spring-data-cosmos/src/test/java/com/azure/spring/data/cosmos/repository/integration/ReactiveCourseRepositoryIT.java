@@ -433,8 +433,9 @@ public class ReactiveCourseRepositoryIT {
         List<Course> result = repository.findAll().collectList().block();
         assertThat(result.size()).isEqualTo(5);
 
-        repository.deleteByNameAndDepartment(COURSE_NAME_1,
-            DEPARTMENT_NAME_3).block();
+        List<Course> deleteResult = repository.deleteByNameAndDepartment(COURSE_NAME_1,
+            DEPARTMENT_NAME_3).collectList().block();
+        assertThat(deleteResult.size()).isEqualTo(2);
 
         List<Course> result2 = repository.findAll().collectList().block();
         assertThat(result2.size()).isEqualTo(3);

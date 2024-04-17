@@ -209,8 +209,9 @@ public class AddressRepositoryIT {
         final long count = repository.count();
         assertThat(count).isEqualTo(5);
 
-        repository.deleteByStreetAndCity(
-            TEST_ADDRESS1_PARTITION1.getStreet(), TEST_ADDRESS1_PARTITION1.getCity());
+        List<Address> deleteResult = TestUtils.toList(repository.deleteByStreetAndCity(
+            TEST_ADDRESS1_PARTITION1.getStreet(), TEST_ADDRESS1_PARTITION1.getCity()));
+        assertThat(deleteResult.size()).isEqualTo(2);
 
         final List<Address> result = TestUtils.toList(repository.findAll());
 

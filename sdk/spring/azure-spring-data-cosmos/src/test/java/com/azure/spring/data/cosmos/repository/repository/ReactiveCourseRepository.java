@@ -72,6 +72,6 @@ public interface ReactiveCourseRepository extends ReactiveCosmosRepository<Cours
     @Query(value = "select value count(1) from c where c.name = @name")
     Mono<Long> countByQuery(@Param("name") String name);
 
-    Mono<Void> deleteByNameAndDepartment(String name, String department);
+    Flux<Course> deleteByNameAndDepartment(String name, String department);
 
 }
