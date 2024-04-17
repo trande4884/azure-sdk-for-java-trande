@@ -765,7 +765,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
      * @param query the document query
      * @param domainType the entity class
      * @param containerName the container name
-     * @return Mono
+     * @return Flux<T>
      */
     @Override
     public <T> Flux<T> delete(CosmosQuery query, Class<T> domainType, String containerName) {
